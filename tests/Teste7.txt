@@ -1,0 +1,28 @@
+class Calculadora {
+int a,b;
+String operacao;
+float resultado;
+{
+    write("Digite o primeiro inteiro nao negativo:");
+    read (a);
+    write("Digite a operacao: (+,-,*,/) ");
+    read (operacao);
+    write("Digite o segundo inteiro nao negativo:");
+    read (b);
+
+    if ( operacao == '+' )
+        resultado = a + b;
+        else
+        if ( operacao == '-' )
+            resultado = a + b;
+            else
+            if ( operacao == '*' )
+                resultado = a * b;
+                else
+                if ( operacao == '/' )
+                    resultado = a / b;
+                    else
+                    write("Operacao invalida!");
+
+    write(resultado);
+}
