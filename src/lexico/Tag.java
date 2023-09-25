@@ -18,6 +18,7 @@ public class Tag {
         FLOAT = 265,
 
         // Pontuação
+        PONTO = 291,
         PONTO_E_VIRGULA = 266,
         VIRGULA = 267,
         ABRE_CHAVES = 268,

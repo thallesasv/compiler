@@ -18,6 +18,7 @@ public class Word extends Token{
     public static final Word float_word = new Word ("float", Tag.FLOAT);
 
     // Pontuação
+    public static final Word ponto = new Word (".", Tag.PONTO);
     public static final Word ponto_e_virgula = new Word (";", Tag.PONTO_E_VIRGULA);
     public static final Word virgula = new Word (",", Tag.VIRGULA);
     public static final Word abre_chaves = new Word ("{", Tag.ABRE_CHAVES);

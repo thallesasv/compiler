@@ -6,6 +6,7 @@ import java.util.*;
 public class Lexer {
     public static int line = 1; // Contador de linhas
     private char ch = ' '; // Caractere lido do arquivo
+    private char charAnterior = ' '; // Caractere anterior lido do arquivo
     private FileReader file;
 
     private Hashtable words = new Hashtable();
@@ -40,6 +41,7 @@ public class Lexer {
         reserve(Word.float_word);
 
         // Insere pontuação na HashTable
+        reserve(Word.ponto);
         reserve(Word.ponto_e_virgula);
         reserve(Word.virgula);
         reserve(Word.abre_chaves);
@@ -76,6 +78,8 @@ public class Lexer {
 
     // Lê o próximo caractere do arquivo
     private void readch() throws IOException{
+        if (ch != ' ')
+            charAnterior = ch;
         ch = (char) file.read();
     }
 
@@ -96,35 +100,128 @@ public class Lexer {
             else break;
         }
 
+        // Comentários
+        int contador_auxiliar_de_linha = 0;
+        if (ch == '/') {
+            readch();
+            if (ch == '/') { // Identifica o comentário de uma linha
+                do {
+                    readch();
+                    if (ch == '\n') { // Identifica que o comentário de uma linha acabou
+                        readch();
+                        line++;
+                        break;
+                    }
+                } while ((int) ch != Tag.FINAL_DE_ARQUIVO);
+            } else if (ch == '*') { // Identifica início do comentário de várias linhas
+                contador_auxiliar_de_linha = line;
+                do {
+                    readch();
+                    if (ch == '\n') { // Identifica a quebra de linha
+                        line++;
+                    }
+                    if (ch == '*') {
+                        readch();
+                        if (ch == '/') { // Identifica o final do comentário de várias linhas
+                            readch();
+                            break;
+                        }
+                    }
+                } while ((int) ch != Tag.FINAL_DE_ARQUIVO);
+            } else {
+                return Word.divisao;
+            }
+
+            if ((int) ch == Tag.FINAL_DE_ARQUIVO) {
+                Token t = new Token(Tag.FINAL_DE_ARQUIVO);
+                return t;
+            }
+
+            if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || ch == '\n') {
+                return scan();
+            }
+        }
+
         switch(ch){
 
-            // Operadores
             case '&':
                 if (readch('&')) return Word.and;
-                else return new Token('&');
             case '|':
                 if (readch('|')) return Word.or;
-                else return new Token('|');
             case '=':
                 if (readch('=')) return Word.igual;
-                else return new Token('=');
-
+                else return Word.atribuicao;
             case '<':
                 if (readch('=')) return Word.menor_igual;
-                else return new Token('<');
+                else return Word.menor;
             case '>':
                 if (readch('=')) return Word.maior_igual;
-                else return new Token('>');
+                else return Word.maior;
+            case '.':
+                return Word.ponto;
+            case ';':
+                return Word.ponto_e_virgula;
+            case ',':
+                return Word.virgula;
+            case '{':
+                return Word.abre_chaves;
+            case '}':
+                return Word.fecha_chaves;
+            case '(':
+                return Word.abre_parenteses;
+            case ')':
+                return Word.fecha_parenteses;
+            case '+':
+                if (readch('"')) return Word.concatenacao;
+                else return Word.adicao;
+            case '-':
+                return Word.subtracao;
+            case '*':
+                if (readch('/')) return Word.fecha_comentario;
+                else return Word.multiplicacao;
+            case '/':
+                if (readch('/')) return Word.comentario_de_uma_linha;
+                else if (readch('*')) return Word.abre_comentario;
+                else return Word.divisao;
+            case '!':
+                if (readch('=')) return Word.diferente;
+                else return Word.exclamacao;
         }
 
         // Números
-        if (Character.isDigit(ch)){
-            int value=0;
-            do{
-                value = 10*value + Character.digit(ch,10);
+        if (Character.isDigit(ch)) {
+            int value = 0;
+            do {
+                value = 10 * value + Character.digit(ch, 10);
                 readch();
-            }while(Character.isDigit(ch));
-            return new Int(value);
+            } while (Character.isDigit(ch));
+
+            if (ch != '.') {
+                return new Int(value); // Inteiro
+            } else {
+                readch();
+                float numeroFloat = value;
+                float unidadeDecimal = 10;
+                do {
+                    numeroFloat = numeroFloat + Character.digit(ch, 10) / unidadeDecimal;
+                    unidadeDecimal = unidadeDecimal * 10;
+                    readch();
+                } while (Character.isDigit(ch));
+                return new Float(numeroFloat); // numero de ponto flutuante literal
+            }
+        }
+
+        // Literais
+        if (charAnterior == '"') {
+            StringBuffer sb = new StringBuffer();
+            do {
+                sb.append(ch);
+                readch();
+                if (ch == '\n') {
+                    line++;
+                }
+            } while (ch != '"' && (int) ch != Tag.FINAL_DE_ARQUIVO);
+            return new Literal(sb.toString());
         }
 
         // Identificadores
