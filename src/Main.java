@@ -1,7 +1,7 @@
-import lexico.Lexer;
-import lexico.Word;
+import lexico.*;
+import lexico.Float;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +9,35 @@ public class Main {
     public static void main(String[] args) {
         String fileName = args[0];
 
-        Lexer lexer;
-
         try {
-            lexer = new Lexer(fileName);
+            Lexer lexer = new Lexer(fileName);
 
-            System.out.println("\nAnálise concluída!\n\n");
+            /*System.out.println("\n******************************\n");
+            System.out.println("Tokens lidos:\n");
+            System.out.println("\n******************************\n");
+
+            while (true) {
+                Token tokenDoScan = lexer.scan();
+                if (tokenDoScan.getTag() == Tag.STRING) {
+                    Literal token = (Literal) tokenDoScan;
+                    System.out.print(token.toString());
+                } else if (tokenDoScan.getTag() == Tag.INT) {
+                    Int token = (Int) tokenDoScan;
+                    System.out.print(token.toString());
+                } else if (tokenDoScan.getTag() == Tag.FLOAT) {
+                    Float token = (Float) tokenDoScan;
+                    System.out.print(token.toString());
+                } else if (tokenDoScan.getTag() == Tag.FINAL_DE_ARQUIVO) {
+                    break;
+                } else {
+                    System.out.print(tokenDoScan.toString() + "\n");
+                }
+            }
+
+            System.out.println("\n******************************\n");
+            System.out.println("Fim dos tokens lidos\n");*/
+
+            System.out.println("\n\n******************************\n\n");
 
             System.out.println("Tabela de símbolos:\n");
             System.out.println("\n******************************\n");
@@ -28,8 +51,11 @@ public class Main {
 
             System.out.println("\n******************************\n");
             System.out.println("Fim da Tabela de símbolos\n");
+            System.out.println("\n******************************\n");
 
-        } catch (FileNotFoundException e) {
+            System.out.println("\nAnálise concluída!\n");
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
