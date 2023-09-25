@@ -3,10 +3,16 @@ import lexico.Lexer;
 import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        String fileName = args[0];
+
+        Lexer lexer;
+
         try {
-            Lexer lexer = new Lexer("../../tests/" + args[0] + ".txt");
+            lexer = new Lexer(fileName);
+
             System.out.println("Análise concluída!");
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
