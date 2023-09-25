@@ -9,7 +9,7 @@ public class Lexer {
     private char charAnterior = ' '; // Caractere anterior lido do arquivo
     private FileReader file;
 
-    private Hashtable words = new Hashtable();
+    private HashMap<String,Word> words = new HashMap<>();
 
     // Método para inserir palavras reservadas na HashTable
     private void reserve(Word w){
@@ -243,5 +243,9 @@ public class Lexer {
         Token t = new Token(ch);
         ch = ' ';
         return t;
+    }
+
+    public HashMap<String, Word> getWords() {
+        return words;
     }
 }
