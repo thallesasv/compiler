@@ -6,10 +6,6 @@ public class Token {
         tag = t;
     }
     public String toString(){
-        return "" + tag;
-    }
-
-    public int getTag() {
-        return tag;
+        return "<" + tag + ">";
     }
 }

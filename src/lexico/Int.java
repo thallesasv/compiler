@@ -7,6 +7,6 @@ public class Int extends Token{
         this.value = value;
     }
     public String toString(){
-        return "" + value;
+        return "<" + value + ", " + tag + ">";
     }
 }

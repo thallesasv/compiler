@@ -8,12 +8,12 @@ public class Lexer {
     private char ch = ' '; // Caractere lido do arquivo
     private char charAnterior = ' '; // Caractere anterior lido do arquivo
     private FileReader file;
-
-    private HashMap<String,Word> words = new HashMap<>();
+    public static Hashtable<String, Word> tabelaDeSimbolos = new Hashtable<String, Word>();
+    public static Hashtable<Token, Integer> tableDeErros = new Hashtable<Token, Integer>();
 
     // Método para inserir palavras reservadas na HashTable
     private void reserve(Word w){
-        words.put(w.getLexeme(), w); // Lexema é a chave de entrada na HashTable
+        tabelaDeSimbolos.put(w.getLexeme(), w); // Lexema é a chave de entrada na HashTable
     }
 
     // Método construtor
@@ -78,8 +78,6 @@ public class Lexer {
 
     // Lê o próximo caractere do arquivo
     private void readch() throws IOException{
-        if (ch != ' ')
-            charAnterior = ch;
         ch = (char) file.read();
     }
 
@@ -134,11 +132,12 @@ public class Lexer {
 
             if ((int) ch == Tag.FINAL_DE_ARQUIVO) {
                 Token t = new Token(Tag.FINAL_DE_ARQUIVO);
+                tableDeErros.put(t, contador_auxiliar_de_linha);
                 return t;
             }
 
-            if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || ch == '\n') {
-                return scan();
+            if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b') {
+                 ch = '/';
             }
         }
 
@@ -146,8 +145,18 @@ public class Lexer {
 
             case '&':
                 if (readch('&')) return Word.and;
+                else {
+                    Token t = new Token('&');
+                    tableDeErros.put(t, line);
+                    return t;
+                }
             case '|':
                 if (readch('|')) return Word.or;
+                else {
+                    Token t = new Token('|');
+                    tableDeErros.put(t, line);
+                    return t;
+                }
             case '=':
                 if (readch('=')) return Word.igual;
                 else return Word.atribuicao;
@@ -221,6 +230,8 @@ public class Lexer {
                     line++;
                 }
             } while (ch != '"' && (int) ch != Tag.FINAL_DE_ARQUIVO);
+            sb.append(ch);
+            readch();
             return new Literal(sb.toString());
         }
 
@@ -232,20 +243,21 @@ public class Lexer {
                 readch();
             }while(Character.isLetterOrDigit(ch));
             String s = sb.toString();
-            Word w = (Word)words.get(s);
+            Word w = (Word)tabelaDeSimbolos.get(s);
             if (w != null) return w; // Palavra já existe na HashTable
             w = new Word (s, Tag.IDENTIFICADOR);
-            words.put(s, w);
+            tabelaDeSimbolos.put(s, w);
             return w;
         }
 
         // Caracteres não especificados
         Token t = new Token(ch);
         ch = ' ';
-        return t;
-    }
 
-    public HashMap<String, Word> getWords() {
-        return words;
+        if (t.tag != Tag.FINAL_DE_ARQUIVO)
+            tableDeErros.put(t, line);
+        ch = ' ';
+
+        return t;
     }
 }
