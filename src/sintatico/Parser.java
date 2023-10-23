@@ -49,6 +49,7 @@ public class Parser {
                     decl_list();
                 }
                 body();
+                eat(Tag.FINAL_DE_ARQUIVO);
                 break;
             default:
                 error("Erro de sintaxe no método 'program': class ou identificador não encontrado");
