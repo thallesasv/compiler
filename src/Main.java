@@ -1,13 +1,13 @@
 import lexico.*;
-import lexico.Float;
+import sintatico.Parser;
+
 import java.io.IOException;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
         String fileName = args[0];
 
-        try {
+        /*try {
             Lexer lexer = new Lexer(fileName);
 
             System.out.println("\n******************************\n");
@@ -65,6 +65,15 @@ public class Main {
                 System.out.println("\n******************************\n");
             } else
                 System.out.println("\nAnálise concluída!\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        try {
+            Lexer lexer = new Lexer(fileName);
+            Parser parser = new Parser(lexer);
+            parser.start();
+            System.out.println("\nAnálise concluída!\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -51,6 +51,7 @@ public class Word extends Token{
     public static final Word abre_comentario = new Word ("/*", Tag.ABRE_COMENTARIO);
     public static final Word fecha_comentario = new Word ("*/", Tag.FECHA_COMENTARIO);
     public static final Word concatenacao = new Word ("+", Tag.CONCATENACAO);
+    public static final Word aspas = new Word ("\"", Tag.ASPAS);
 
     public Word (String s, int tag){
         super (tag);

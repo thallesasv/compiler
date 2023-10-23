@@ -52,6 +52,7 @@ public class Tag {
         ABRE_COMENTARIO = 287,
         FECHA_COMENTARIO = 288,
         CONCATENACAO = 289,
+        ASPAS = 291,
 
         // Identificador
         IDENTIFICADOR = 290,

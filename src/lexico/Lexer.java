@@ -74,6 +74,7 @@ public class Lexer {
         reserve(Word.abre_comentario);
         reserve(Word.fecha_comentario);
         reserve(Word.concatenacao);
+        reserve(Word.aspas);
     }
 
     // Lê o próximo caractere do arquivo
@@ -136,8 +137,8 @@ public class Lexer {
                 return t;
             }
 
-            if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b') {
-                 ch = '/';
+            if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || ch == '\n') {
+                return scan();
             }
         }
 
