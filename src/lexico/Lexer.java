@@ -79,6 +79,9 @@ public class Lexer {
 
     // Lê o próximo caractere do arquivo
     private void readch() throws IOException{
+        if(ch != ' ') {
+            charAnterior = ch;
+        }
         ch = (char) file.read();
     }
 
@@ -143,7 +146,6 @@ public class Lexer {
         }
 
         switch(ch){
-
             case '&':
                 if (readch('&')) return Word.and;
                 else {
@@ -168,34 +170,54 @@ public class Lexer {
                 if (readch('=')) return Word.maior_igual;
                 else return Word.maior;
             case '.':
+                readch();
                 return Word.ponto;
             case ';':
+                readch();
                 return Word.ponto_e_virgula;
             case ',':
+                readch();
                 return Word.virgula;
             case '{':
+                readch();
                 return Word.abre_chaves;
             case '}':
+                readch();
                 return Word.fecha_chaves;
             case '(':
+                readch();
                 return Word.abre_parenteses;
             case ')':
+                readch();
                 return Word.fecha_parenteses;
             case '+':
                 if (readch('"')) return Word.concatenacao;
-                else return Word.adicao;
+                else {
+                    readch();
+                    return Word.adicao;
+                }
             case '-':
+                readch();
                 return Word.subtracao;
             case '*':
                 if (readch('/')) return Word.fecha_comentario;
-                else return Word.multiplicacao;
+                else {
+                    readch();
+                    return Word.multiplicacao;
+                }
             case '/':
                 if (readch('/')) return Word.comentario_de_uma_linha;
                 else if (readch('*')) return Word.abre_comentario;
-                else return Word.divisao;
+                else {
+                    readch();
+                    return Word.divisao;
+                }
             case '!':
                 if (readch('=')) return Word.diferente;
-                else return Word.exclamacao;
+                else {
+                    readch();
+                    return Word.exclamacao;
+                }
         }
 
         // Números
@@ -231,8 +253,6 @@ public class Lexer {
                     line++;
                 }
             } while (ch != '"' && (int) ch != Tag.FINAL_DE_ARQUIVO);
-            sb.append(ch);
-            readch();
             return new Literal(sb.toString());
         }
 
@@ -253,8 +273,6 @@ public class Lexer {
 
         // Caracteres não especificados
         Token t = new Token(ch);
-        ch = ' ';
-
         if (t.tag != Tag.FINAL_DE_ARQUIVO)
             tableDeErros.put(t, line);
         ch = ' ';

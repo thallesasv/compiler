@@ -58,5 +58,5 @@ public class Tag {
         IDENTIFICADOR = 290,
 
         // Final de arquivo
-        FINAL_DE_ARQUIVO = 999;
+        FINAL_DE_ARQUIVO = 65535;
 }
