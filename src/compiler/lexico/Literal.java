@@ -1,4 +1,4 @@
-package lexico;
+package compiler.lexico;
 
 public class Literal extends Token {
     public final String value;

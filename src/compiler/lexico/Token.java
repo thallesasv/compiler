@@ -1,4 +1,4 @@
-package lexico;
+package compiler.lexico;
 
 public class Token {
     public final int tag; // Constante que representa o token

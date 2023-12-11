@@ -1,4 +1,4 @@
-package lexico;
+package compiler.lexico;
 
 public class Tag {
     public final static int

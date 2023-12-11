@@ -1,4 +1,6 @@
-package lexico;
+package compiler.lexico;
+
+import compiler.CompilerError;
 
 import java.io.*;
 import java.util.*;
@@ -136,7 +138,7 @@ public class Lexer {
 
             if ((int) ch == Tag.FINAL_DE_ARQUIVO) {
                 Token t = new Token(Tag.FINAL_DE_ARQUIVO);
-                tableDeErros.put(t, contador_auxiliar_de_linha);
+                CompilerError.error("Erro lexico: Comentario nao finalizado", t);
                 return t;
             }
 
@@ -150,14 +152,14 @@ public class Lexer {
                 if (readch('&')) return Word.and;
                 else {
                     Token t = new Token('&');
-                    tableDeErros.put(t, line);
+                    CompilerError.error("Erro lexico: token desconhecido", t);
                     return t;
                 }
             case '|':
                 if (readch('|')) return Word.or;
                 else {
                     Token t = new Token('|');
-                    tableDeErros.put(t, line);
+                    CompilerError.error("Erro lexico: token desconhecido", t);
                     return t;
                 }
             case '=':
@@ -274,7 +276,8 @@ public class Lexer {
         // Caracteres não especificados
         Token t = new Token(ch);
         if (t.tag != Tag.FINAL_DE_ARQUIVO)
-            tableDeErros.put(t, line);
+            CompilerError.error("Erro lexico: token desconhecido", t);
+            CompilerError.error("Erro lexico: token desconhecido", t);
         ch = ' ';
 
         return t;

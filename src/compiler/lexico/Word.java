@@ -1,7 +1,9 @@
-package lexico;
+package compiler.lexico;
 
 public class Word extends Token{
-    private String lexeme = "";
+    private String lexeme = null;
+    public String valor;
+    public int tipo;
 
     // Palavras reservadas
     public static final Word class_word = new Word ("class", Tag.CLASS);

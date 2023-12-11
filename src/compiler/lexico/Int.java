@@ -1,4 +1,4 @@
-package lexico;
+package compiler.lexico;
 
 public class Int extends Token{
     public final int value;
