@@ -1,4 +1,4 @@
-class Calculadora {
+class Calculadora
 int a,b;
 String operacao;
 float resultado;
@@ -10,19 +10,23 @@ float resultado;
     write("Digite o segundo inteiro nao negativo:");
     read (b);
 
-    if ( operacao == '+' )
+    if ( operacao == '+' ) {
         resultado = a + b;
-        else
-        if ( operacao == '-' )
+    } else {
+        if ( operacao == '-' ) {
             resultado = a + b;
-            else
-            if ( operacao == '*' )
+        } else {
+            if ( operacao == '*' ) {
                 resultado = a * b;
-                else
-                if ( operacao == '/' )
+            } else {
+                if ( operacao == '/' ) {
                     resultado = a / b;
-                    else
+                } else {
                     write("Operacao invalida!");
+                };
+            };
+        };
+    };
 
     write(resultado);
 }

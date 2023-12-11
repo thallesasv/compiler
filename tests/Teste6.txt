@@ -1,5 +1,5 @@
 class Delta
-    int a,b,c,delta;
+int a,b,c,delta;
 
 {
     write("Digite o valor de a:");
@@ -11,11 +11,13 @@ class Delta
 
     delta = b*b - 4*a*c;
 
-    if ( delta > 0 )
+    if ( delta > 0 ) {
                 write("A equacao possui duas raizes reais distintas");
-            else
-                if (delta == 0)
+            } else {
+                if (delta == 0) {
                     write("A equacao possui uma raiz real");
-                else
+                } else {
                     write("A equacao nao possui raizes reais");
+                }
+    };
 }
