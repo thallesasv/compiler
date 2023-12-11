@@ -10,7 +10,7 @@ Trabalho prático realizado na disciplina de Compiladores: construção de um co
 
     -> Abra o terminal na pasta src.
 
-    -> Compile o código com comando "javac Main.java -Xlint:unchecked"
+    -> Compile o código com comando "javac Main.java"
 
     -> Execute o compilador com o comando "java Main <caminho do arquivo de teste>"
 
